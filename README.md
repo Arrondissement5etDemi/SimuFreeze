@@ -1,2 +1,2 @@
-# SimuFreezed
+# SimuFreeze
 Simulated Freezing (development in progress)
