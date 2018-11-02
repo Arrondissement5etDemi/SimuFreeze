@@ -104,7 +104,7 @@ public class Box {
 		return result;
 	}
 
-	/**moves a random particle in a random direction by a distance of d/100 
+	/**moves a random particle in a random direction by a distance of 0.001
  * 	@return Movement, what movement has occured. */
 	public Movement move() {
 		//randomly choose a particle to move
@@ -116,7 +116,7 @@ public class Box {
 		return result;
 	}
 	
-	/**moves a particlar particle in a particular direction by a distance of d/100
+	/**moves a particlar particle in a particular direction by a distance of 0.001
  * 	@param m, Movement, including the index of the particle and the direction to move */
 	public void move(Movement m) {
 		int ind = m.getInd();
@@ -127,7 +127,7 @@ public class Box {
 		if (ind >= n) {
                         throw new IllegalArgumentException("input index must be < the number of particles");
                 }
-		double moveDist = d/100.0;
+		double moveDist = 0.001;
 		//obtain the coordinates of the particle at ind
 		double x = partiArr[ind].getx();
 		double y = partiArr[ind].gety();
@@ -135,8 +135,8 @@ public class Box {
 		double deltaX = Math.cos(direction)*moveDist;
 		double deltaY = Math.sin(direction)*moveDist;
 		//get new coordinates of the partilce at ind
-		partiArr[ind].setX((x + deltaX)%d);
-		partiArr[ind].setY((y + deltaY)%d);	
+		partiArr[ind].setX(positiveModulo(x + deltaX,d));
+		partiArr[ind].setY(positiveModulo(y + deltaY,d));	
 	}
 
 	/** returns the array of particles
@@ -155,11 +155,10 @@ public class Box {
 	/** returns the contant of partiArray as a string
  * 	@return the content of partiArr */
 	public String toString() {
-		String result = "{";
+		String result = "";
 		for (int i = 0; i < n; i++) {
-			result = result + partiArr[i].toString() + ",";
+			result = result + partiArr[i].toString() + "\n";
 		}
-		result = result + "}";
 		return result;
 	}
 
@@ -171,6 +170,13 @@ public class Box {
 		Random r = new Random();	
        		return r.nextDouble()*(max - min) + min;
 	}
-		
 	
+		
+	private static double positiveModulo(double x, double d) {
+		double result = x%d;
+		if (result < 0) {
+			result = result + d;
+		}
+		return result;
+	}
 }
