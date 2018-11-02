@@ -66,7 +66,6 @@ public class Box {
 		return sum;
 	}
 
-
 	/**gets the energy felt by a single particle in the box
  * 	@param ind integer, the index of the particle in partiArr 
  * 	@return double, the energy felt by the particle */
@@ -103,6 +102,41 @@ public class Box {
 		
 		}
 		return result;
+	}
+
+	/**moves a random particle in a random direction by a distance of d/100 
+ * 	@return Movement, what movement has occured. */
+	public Movement move() {
+		//randomly choose a particle to move
+		int ind = (int) Math.floor(getRandomNumberInRange(0.0,(double)n));
+		//randomly choose a direction
+		double direction = getRandomNumberInRange(0.0,2*Math.PI);
+		Movement result = new Movement(ind, direction);
+		move(result);
+		return result;
+	}
+	
+	/**moves a particlar particle in a particular direction by a distance of d/100
+ * 	@param m, Movement, including the index of the particle and the direction to move */
+	public void move(Movement m) {
+		int ind = m.getInd();
+		double direction = m.getDirection();
+		if (direction >= 2*Math.PI || direction < 0) {
+			throw new IllegalArgumentException("input direction must be between 0 and 2*PI");
+		}
+		if (ind >= n) {
+                        throw new IllegalArgumentException("input index must be < the number of particles");
+                }
+		double moveDist = d/100.0;
+		//obtain the coordinates of the particle at ind
+		double x = partiArr[ind].getx();
+		double y = partiArr[ind].gety();
+		//obtain the amount of x and y to move
+		double deltaX = Math.cos(direction)*moveDist;
+		double deltaY = Math.sin(direction)*moveDist;
+		//get new coordinates of the partilce at ind
+		partiArr[ind].setX((x + deltaX)%d);
+		partiArr[ind].setY((y + deltaY)%d);	
 	}
 
 	/** returns the array of particles

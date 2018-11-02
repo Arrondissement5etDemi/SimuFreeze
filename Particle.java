@@ -19,6 +19,15 @@ public class Particle {
 		return y;
 	}
 
+	//modifiers
+	public void setX(double xx) {
+		x = xx;
+	}
+
+	public void setY(double yy) {
+		y = yy;
+	}
+
 	//distance to another city
 	public double distanceto(Particle another) {
 		double anotherX = another.getx();
