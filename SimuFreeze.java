@@ -17,7 +17,7 @@ public class SimuFreeze {
 				Movement proposedMove = pandora.move(5.0,1);
 				double newE = pandora.getEnergy();
 				//if the energy gets lower, we update the record
-				if (newE < oldE) {
+				if (newE < recordE) {
 					recordE = newE;
 				}
 				//do we accept it?
