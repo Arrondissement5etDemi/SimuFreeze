@@ -3,7 +3,7 @@ import java.util.*;
 public class TestBox {
 	public static void main(String[] args) {
 		double[][] coordinates = {{0.5,0.5}};
-		Box box1 = new Box(1,1.0,5.0,coordinates);
+		Box box1 = new Box(1,1.0,10.0,coordinates);
 		int n = box1.getN();
 		double d = box1.getD();
 		System.out.println("number of particles and dimension of box1 is " + n + " and " + d);
@@ -19,20 +19,20 @@ public class TestBox {
 		System.out.println("the above should be twice the square lattice energy per particle");
                 System.out.println(SquareLattice.ljPot(0.5,1));
 		//test the move method for box1
-		Movement left = new Movement(0,Math.PI);
+		Movement left = new Movement(0,Math.PI,0.01);
 		box1.move(left);
 		System.out.println("we move left, the new psitions of particles in box1:");
 		System.out.println(box1.toString());
-		Movement right = new Movement(0,0);
+		Movement right = left.reverse();
 		box1.move(right);
 		System.out.println("we move right, now the particle should return to the original position:");
 		System.out.println(box1.toString());
 		System.out.println("now we move the particle randomly...");
-		box1.move();
+		box1.move(0.1);
 		System.out.println("The new position of the particle:"+ box1.toString());
 		System.out.println("the energy of box1:" + box1.getEnergy());
 		//test the move method for box2
-		box2.move();
+		box2.move(0.1);
 		System.out.println("test move for box 2:");
 		System.out.println("The new positions of the particles in box2: "+ box2.toString());
                 System.out.println("the energy of box2: " + box2.getEnergy());
