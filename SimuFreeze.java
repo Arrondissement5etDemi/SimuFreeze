@@ -3,37 +3,43 @@ import java.util.*;
 public class SimuFreeze {
 	public static void main(String[] args) {
 		//create a new box with random particles
-		Box pandora = new Box(100,9.0,10.0);
+		Box pandora = new Box(120,Math.sqrt(120*0.8),8.0);
 		//get the initial energy
-		double recordE = pandora.getEnergy();
-		System.out.print(recordE);
+		System.out.println(pandora.getN()+" "+pandora.getD());
+		Scanner keyboard = new Scanner(System.in);
+                System.out.println("Enter displacement");
+                double displace = keyboard.nextDouble();
+
 		//begin the cooling
-		for (double temperature = 3; temperature >= 0.01; temperature = temperature * 0.9) {
+		for (double temperature = 10; temperature >= 0.001; temperature = temperature * 0.98) {
 			System.out.println("Temperature now = " + Double.toString(temperature));
 			int numAccept = 0;
-			while (numAccept <= 200) {
-				double oldE = pandora.getEnergy();
-				//move a random particle in a random direction
-				Movement proposedMove = pandora.move(5.0,1);
-				double newE = pandora.getEnergy();
-				//if the energy gets lower, we update the record
-				if (newE < recordE) {
-					recordE = newE;
-				}
+			int numReject = 0;
+			int timePerTemp = 10000;
+			
+			for (int i=1; i<= timePerTemp; i++) {
+				int ind = 
+				(int) Math.floor(Box.getRandomNumberInRange(0.0,(double)pandora.getN()));
+				double oldE = pandora.partiE(ind);
+				Movement proposedMove = pandora.move(ind,displace);
+				double newE = pandora.partiE(ind);
 				//do we accept it?
 				if (Boltzmann.accept(newE,oldE,temperature)) {
 					numAccept ++;
-					System.out.println(numAccept+" "+newE);
+					//System.out.println("Energy now = " + pandora.getEnergy());
 				} 
 				else {
-					pandora.move(proposedMove.reverse());	
+					pandora.move(proposedMove.reverse());
+					numReject ++;
 				}
 			}
+			System.out.println("Accept ratio =" + (double)numAccept/(double)timePerTemp);
+			System.out.println("Energy now = " + pandora.getEnergy());
+			//System.out.println(pandora);
 		}
 		//get the final configuration, record energy, etc
 		System.out.println("The final configuration: ");
 		System.out.println(pandora);
 		System.out.println("The final energy : " + pandora.getEnergy());
-		System.out.println("Record low energy: " + Double.toString(recordE));
 	}
 }
